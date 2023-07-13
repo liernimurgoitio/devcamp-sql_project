@@ -1,200 +1,154 @@
-USE university_schema_devcamp_project;
+CREATE DATABASE  IF NOT EXISTS `university_schema_devcamp_project` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `university_schema_devcamp_project`;
+-- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: university_schema_devcamp_project
+-- ------------------------------------------------------
+-- Server version	8.0.33
 
-# Create a script that populates all of the database tables with sample data
-	# STUDENTS
-    
-INSERT INTO students (students_name, students_email)
-VALUES ('student1', 'student1@university.com');
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student2', 'student2@university.com');
+--
+-- Table structure for table `courses`
+--
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student3', 'student3@university.com');
+DROP TABLE IF EXISTS `courses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `courses` (
+  `courses_id` int NOT NULL AUTO_INCREMENT,
+  `courses_name` varchar(80) NOT NULL,
+  `courses_professors_id` int NOT NULL,
+  PRIMARY KEY (`courses_id`),
+  UNIQUE KEY `courses_id_UNIQUE` (`courses_id`),
+  KEY `grades_professors_id_idx` (`courses_professors_id`),
+  KEY `courses_professors_id_idx` (`courses_professors_id`),
+  CONSTRAINT `courses_professors_id` FOREIGN KEY (`courses_professors_id`) REFERENCES `professors` (`professors_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student4', 'student4@university.com');
+--
+-- Dumping data for table `courses`
+--
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student5', 'student5@university.com');
+LOCK TABLES `courses` WRITE;
+/*!40000 ALTER TABLE `courses` DISABLE KEYS */;
+INSERT INTO `courses` VALUES (1,'Full Stack Develorper',1),(2,'Cybersecurity',2),(3,'Videogame Programming',3),(4,'Multiplatform Application Development',1),(5,'Frontend Programmer',2),(6,'Backend Programmer',3),(7,'Multidevice Web Design: UX/UI',1);
+/*!40000 ALTER TABLE `courses` ENABLE KEYS */;
+UNLOCK TABLES;
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student6', 'student6@university.com');
+--
+-- Table structure for table `grades`
+--
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student7', 'student7@university.com');
+DROP TABLE IF EXISTS `grades`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `grades` (
+  `grades_id` int NOT NULL AUTO_INCREMENT,
+  `grades_grade` varchar(5) NOT NULL,
+  `grades_courses_id` int NOT NULL,
+  `grades_students_id` int NOT NULL,
+  `grades_professors_id` int NOT NULL,
+  PRIMARY KEY (`grades_id`),
+  UNIQUE KEY `grades_id_UNIQUE` (`grades_id`),
+  KEY `grades_courses_id_idx` (`grades_courses_id`),
+  KEY `grades_students_id_idx` (`grades_students_id`),
+  KEY `grades_professors_id_idx` (`grades_professors_id`),
+  CONSTRAINT `grades_courses_id` FOREIGN KEY (`grades_courses_id`) REFERENCES `courses` (`courses_id`) ON DELETE CASCADE,
+  CONSTRAINT `grades_professors_id` FOREIGN KEY (`grades_professors_id`) REFERENCES `professors` (`professors_id`) ON DELETE CASCADE,
+  CONSTRAINT `grades_students_id` FOREIGN KEY (`grades_students_id`) REFERENCES `students` (`students_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student8', 'student8@university.com');
+--
+-- Dumping data for table `grades`
+--
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student9', 'student9@university.com');
+LOCK TABLES `grades` WRITE;
+/*!40000 ALTER TABLE `grades` DISABLE KEYS */;
+INSERT INTO `grades` VALUES (1,'5',1,20,1),(2,'4',7,5,1),(3,'3',3,16,3),(4,'2',6,8,3),(5,'1',3,2,3),(6,'4',1,5,1),(7,'5',7,9,1),(8,'1',3,8,3),(9,'5',6,1,3),(10,'3',3,20,3);
+/*!40000 ALTER TABLE `grades` ENABLE KEYS */;
+UNLOCK TABLES;
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student10', 'student10@university.com');
+--
+-- Table structure for table `professors`
+--
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student11', 'student11@university.com');
+DROP TABLE IF EXISTS `professors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `professors` (
+  `professors_id` int NOT NULL AUTO_INCREMENT,
+  `professors_name` varchar(100) DEFAULT NULL,
+  `professors_email` varchar(100) NOT NULL,
+  PRIMARY KEY (`professors_id`),
+  UNIQUE KEY `professors_id_UNIQUE` (`professors_id`),
+  UNIQUE KEY `professors_email_UNIQUE` (`professors_email`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student12', 'student12@university.com');
+--
+-- Dumping data for table `professors`
+--
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student13', 'student13@university.com');
+LOCK TABLES `professors` WRITE;
+/*!40000 ALTER TABLE `professors` DISABLE KEYS */;
+INSERT INTO `professors` VALUES (1,'professors1','professors1@university.com'),(2,'professors2','professors2@university.com'),(3,'professors3','professors3@university.com');
+/*!40000 ALTER TABLE `professors` ENABLE KEYS */;
+UNLOCK TABLES;
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student14', 'student14@university.com');
+--
+-- Table structure for table `students`
+--
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student15', 'student15@university.com');
+DROP TABLE IF EXISTS `students`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `students` (
+  `students_id` int NOT NULL AUTO_INCREMENT,
+  `students_name` varchar(100) DEFAULT NULL,
+  `students_email` varchar(80) NOT NULL,
+  PRIMARY KEY (`students_id`),
+  UNIQUE KEY `students_id_UNIQUE` (`students_id`),
+  UNIQUE KEY `students_email_UNIQUE` (`students_email`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student16', 'student16@university.com');
+--
+-- Dumping data for table `students`
+--
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student17', 'student17@university.com');
+LOCK TABLES `students` WRITE;
+/*!40000 ALTER TABLE `students` DISABLE KEYS */;
+INSERT INTO `students` VALUES (1,'student1','student1@university.com'),(2,'student2','student2@university.com'),(3,'student3','student3@university.com'),(4,'student4','student4@university.com'),(5,'student5','student5@university.com'),(6,'student6','student6@university.com'),(7,'student7','student7@university.com'),(8,'student8','student8@university.com'),(9,'student9','student9@university.com'),(10,'student10','student10@university.com'),(11,'student11','student11@university.com'),(12,'student12','student12@university.com'),(13,'student13','student13@university.com'),(14,'student14','student14@university.com'),(15,'student15','student15@university.com'),(16,'student16','student16@university.com'),(17,'student17','student17@university.com'),(18,'student18','student18@university.com'),(19,'student19','student19@university.com'),(20,'student20','student20@university.com');
+/*!40000 ALTER TABLE `students` ENABLE KEYS */;
+UNLOCK TABLES;
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student18', 'student18@university.com');
+--
+-- Dumping events for database 'university_schema_devcamp_project'
+--
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student19', 'student19@university.com');
+--
+-- Dumping routines for database 'university_schema_devcamp_project'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-INSERT INTO students (students_name, students_email)
-VALUES ('student20', 'student20@university.com');
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-	# COURSES
-    
-INSERT INTO courses (courses_name, courses_professors_id)
-VALUES ('Full Stack Develorper', 1);
-
-INSERT INTO courses (courses_name, courses_professors_id)
-VALUES ('Cybersecurity', 2);
-
-INSERT INTO courses (courses_name, courses_professors_id)
-VALUES ('Videogame Programming', 3);
-
-INSERT INTO courses (courses_name, courses_professors_id)
-VALUES ('Multiplatform Application Development', 1);
-
-INSERT INTO courses (courses_name, courses_professors_id)
-VALUES ('Frontend Programmer', 2);
-
-INSERT INTO courses (courses_name, courses_professors_id)
-VALUES ('Backend Programmer', 3);
-
-INSERT INTO courses (courses_name, courses_professors_id)
-VALUES ('Multidevice Web Design: UX/UI', 1);
-
-	# PROFESSORS
-    
-INSERT INTO professors (professors_name, professors_email)
-VALUES ('professors1', 'professors1@university.com');
-
-INSERT INTO professors (professors_name, professors_email)
-VALUES ('professors2', 'professors2@university.com');
-
-INSERT INTO professors (professors_name, professors_email)
-VALUES ('professors3', 'professors3@university.com');
-
-	# GRADES
-    
-INSERT INTO grades (grades_grade, grades_courses_id, grades_students_id, grades_professors_id)
-VALUES ('5', 1, 20, 1);
-
-INSERT INTO grades (grades_grade, grades_courses_id, grades_students_id, grades_professors_id)
-VALUES ('4', 7, 5, 1);
-
-INSERT INTO grades (grades_grade, grades_courses_id, grades_students_id, grades_professors_id)
-VALUES ('3', 3, 16, 3);
-
-INSERT INTO grades (grades_grade, grades_courses_id, grades_students_id, grades_professors_id)
-VALUES ('2', 6, 8, 3);
-
-INSERT INTO grades (grades_grade, grades_courses_id, grades_students_id, grades_professors_id)
-VALUES ('1', 3, 2, 3);
-
-INSERT INTO grades (grades_grade, grades_courses_id, grades_students_id, grades_professors_id)
-VALUES ('4', 1, 5, 1);
-
-INSERT INTO grades (grades_grade, grades_courses_id, grades_students_id, grades_professors_id)
-VALUES ('5', 7, 9, 1);
-
-INSERT INTO grades (grades_grade, grades_courses_id, grades_students_id, grades_professors_id)
-VALUES ('1', 3, 8, 3);
-
-INSERT INTO grades (grades_grade, grades_courses_id, grades_students_id, grades_professors_id)
-VALUES ('5', 6, 1, 3);
-
-INSERT INTO grades (grades_grade, grades_courses_id, grades_students_id, grades_professors_id)
-VALUES ('3', 3, 20, 3);
-
-
-# SQL query scripts for:
-	# The average grade that is given by each professor
-
-SELECT professors_name AS 'Pofessors Name',
-AVG(grades_grade) AS 'Average Grade'
-FROM grades g
-JOIN professors p
-ON g.grades_professors_id = p.professors_id
-GROUP BY professors_id;
-
-	# The top grades for each student
-
-SELECT students_name AS 'Student Name',
-MAX(grades_grade) AS 'Grades Grade'
-FROM students s
-JOIN grades g
-ON g.grades_students_id = s.students_id
-GROUP BY students_name; 
-
-	# Sort students by the courses that they are enrolled in
-    
-SELECT 
-	g.grades_students_id AS 'Student ID',
-    s.students_name AS 'Student Name',
-	c.courses_name AS 'Course Name'
-FROM grades g
-JOIN courses c
-ON g.grades_courses_id = c.courses_id
-JOIN students s
-ON g.grades_students_id = s.students_id
-ORDER BY students_id;
-
-	# Create a summary report of courses and their average grades, sorted by the most challenging course (course with the lowest average grade) to the easiest course
-
-SELECT 
-	c.courses_name AS 'Course Name',
-    AVG(g.grades_grade) AS 'Average Grade'
-FROM courses c
-JOIN grades g 
-ON c.courses_id = g.grades_courses_id
-GROUP BY c.courses_name
-ORDER BY AVG(g.grades_grade) ASC;
-
-	# Finding which student and professor have the most courses in common
-
-SELECT 
-	g.grades_students_id AS 'Student ID',
-    s.students_name AS 'Student Name',
-    p.professors_id AS 'Professor ID',
-    p.professors_name AS 'Professor Name',
-	COUNT(*) AS 'Common Courses'
-
-FROM grades g
-JOIN courses c
-ON g.grades_courses_id = c.courses_id
-JOIN students s 
-ON g.grades_students_id = s.students_id
-JOIN professors p 
-ON c.courses_professors_id = p.professors_id
-GROUP BY 
-	s.students_id, 
-	p.professors_id
-ORDER BY COUNT(*) DESC
-LIMIT 1;
-
-
-
-
+-- Dump completed on 2023-07-13 12:35:59
